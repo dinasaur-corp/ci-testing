@@ -1,0 +1,21 @@
+{
+  "name": "ci-provider-benchmark-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portable workloads and instrumentation for comparing CI providers",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "workloads/small-node",
+    "workloads/monorepo/packages/*"
+  ],
+  "scripts": {
+    "bench": "node scripts/run-benchmark.mjs",
+    "bench:matrix": "node scripts/run-matrix.mjs",
+    "scenario": "node scripts/apply-scenario.mjs",
+    "test": "node --test scripts/*.test.mjs",
+    "validate": "npm test && npm run bench -- --provider local --workload all --scenario validation"
+  },
+  "benchScenarioRevision": 0
+}

@@ -1,0 +1,8 @@
+node_modules/
+.bench-cache/
+results/*.json
+results/*.jsonl
+!results/.gitkeep
+.env
+.DS_Store
+

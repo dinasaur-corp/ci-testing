@@ -1,0 +1,51 @@
+version: 2.1
+
+parameters:
+  workload:
+    type: string
+    default: all
+  scenario:
+    type: string
+    default: circleci-default
+
+jobs:
+  benchmark:
+    docker:
+      - image: cimg/node:22.20
+    resource_class: medium
+    environment:
+      BENCH_PROVIDER: circleci
+      BENCH_RUNNER_LABEL: circleci-medium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-v1-{{ checksum "package-lock.json" }}
+            - npm-v1-
+      - restore_cache:
+          keys:
+            - task-v1-{{ checksum "workloads/monorepo/packages/package-03/src/value.txt" }}
+            - task-v1-
+      - run:
+          name: Install dependencies
+          command: npm ci --no-audit --no-fund
+      - run:
+          name: Run benchmark
+          command: npm run bench -- --provider circleci --workload << pipeline.parameters.workload >> --scenario << pipeline.parameters.scenario >>
+      - save_cache:
+          key: npm-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+      - save_cache:
+          key: task-v1-{{ checksum "workloads/monorepo/packages/package-03/src/value.txt" }}
+          paths:
+            - .bench-cache
+      - store_artifacts:
+          path: results
+          destination: benchmark-results
+
+workflows:
+  benchmark:
+    jobs:
+      - benchmark
+

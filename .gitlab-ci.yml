@@ -1,0 +1,37 @@
+default:
+  image: node:22-bookworm
+  interruptible: true
+
+stages:
+  - benchmark
+
+variables:
+  BENCH_PROVIDER: gitlab-ci
+  BENCH_WORKLOAD: all
+  BENCH_SCENARIO: "$CI_PIPELINE_SOURCE"
+  BENCH_RUNNER_LABEL: gitlab-default
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+benchmark:
+  stage: benchmark
+  cache:
+    - key:
+        files:
+          - package-lock.json
+      paths:
+        - .npm/
+    - key: "task-v1-$CI_COMMIT_REF_SLUG"
+      fallback_keys:
+        - task-v1-main
+        - task-v1-default
+      paths:
+        - .bench-cache/
+  script:
+    - npm ci --no-audit --no-fund
+    - npm run bench -- --provider "$BENCH_PROVIDER" --workload "$BENCH_WORKLOAD" --scenario "$BENCH_SCENARIO"
+  artifacts:
+    when: always
+    paths:
+      - results/
+    expire_in: 30 days
+
