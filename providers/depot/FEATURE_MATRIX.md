@@ -14,7 +14,7 @@ Legend:
 | --- | --- | --- | --- |
 | Workflow control plane | GitHub Actions | Depot | Depot CI local/API tested |
 | Workflow syntax | Existing `.github/workflows/*` | GitHub Actions-compatible YAML in `.depot/workflows/*` | Tested for basic steps/actions |
-| Adoption change | Install app and change `runs-on` | Run migration and connect Code Access | Runner path blocked; CI workflow manually created |
+| Adoption change | Install app and change `runs-on` | Run migration and connect Code Access | Org repo created; runner probe blocked pending app installation; CI workflow manually created |
 | Push / PR / schedule triggers | Managed by GitHub | Supported subset of GitHub Actions triggers | Branch dispatch blocked by missing repo connection |
 | Manual/API runs | GitHub API/CLI | Depot CLI/API and `workflow_dispatch` | Local/API run tested |
 | Run local tracked changes | No native GitHub equivalent | `depot ci run` uploads a patch | CLI path tested only with clean tree |
@@ -65,4 +65,3 @@ Legend:
 - Private registries and internal-network connectivity.
 - macOS queueing and Windows limitations in a real workflow.
 - Cross-repository reusable workflow migration.
-

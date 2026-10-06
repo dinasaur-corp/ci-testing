@@ -1,6 +1,6 @@
 # Depot Competitive Analysis and Test Report
 
-Last updated: October 5, 2026.
+Last updated: October 6, 2026.
 
 ## Executive summary
 
@@ -11,15 +11,20 @@ Depot has two products that should be evaluated separately:
 
 The strongest competitive advantage is incremental adoption. A GitHub Actions customer can install the Depot GitHub App and change only `runs-on` to try faster compute and Depot Cache. Depot CI offers a larger migration, but keeps familiar workflow syntax and adds a strong CLI/API-first debugging loop.
 
-Our current testing validates Depot CI local/API execution, CLI ergonomics, structured metrics, artifacts, and the GitHub-hosted baseline. It does **not** yet provide a fair GitHub-hosted-versus-Depot-runner performance comparison because the test repository is owned by a personal GitHub account, while Depot's runner onboarding requires a GitHub organization.
+Our current testing validates Depot CI local/API execution, CLI ergonomics, structured metrics, artifacts, and a five-pair GitHub-hosted baseline. The organization-owned repository is now ready, but the Depot GitHub App has not yet been installed for `dinasaur-corp`, so the fair GitHub-hosted-versus-Depot-runner comparison remains pending.
 
-The machine-readable aggregate is stored in `providers/depot/data/2026-10-05-benchmark-summary.json`.
+Machine-readable aggregates are stored in:
+
+- `providers/depot/data/2026-10-05-benchmark-summary.json`
+- `providers/depot/data/2026-10-06-org-github-baseline.json`
 
 ## What we tested
 
-- Repository: `dinasaur404/ci-testing`
-- Commit: `32135a687050d99ae2e544baae58e876de0a08c5`
-- Date: October 5, 2026
+- GitHub baseline repository: `dinasaur-corp/ci-testing`
+- GitHub baseline commit: `53bc0de9de95b24f266bc2066dc3ca60f54603aa`
+- Depot CI local/API repository: `dinasaur404/ci-testing`
+- Depot CI local/API commit: `32135a687050d99ae2e544baae58e876de0a08c5`
+- Dates: October 5–6, 2026
 - Workload: small Node workload plus six-package synthetic monorepo
 - Tasks per run: 14 build/test tasks
 - GitHub runner: `ubuntu-latest`, observed as 4 CPU, Node `22.23.3`
@@ -27,19 +32,19 @@ The machine-readable aggregate is stored in `providers/depot/data/2026-10-05-ben
 
 ### GitHub-hosted baseline
 
-Three cold/warm pairs were dispatched through GitHub Actions against the same commit.
+Five cold/warm pairs were dispatched through GitHub Actions against the same commit in the organization repository.
 
-| Scenario | Runs | Median queue | Median job | Median workflow wall | Median workload | Cache result |
-| --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Cold | 3 | 4s | 8s | 26s | 859ms | 0 hits / 14 misses |
-| Warm | 3 | 5s | 8s | 22s | 50ms | 14 hits / 0 misses |
+| Scenario | Runs | Median queue | p90 queue | Median job | p90 job | Median wall | p90 wall | Median workload | Cache result |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| Cold | 5 | 5s | 8s | 9s | 16s | 14s | 24s | 810ms | 0 hits / 14 misses |
+| Warm | 5 | 4s | 4s | 8s | 12s | 13s | 17s | 31ms | 14 hits / 0 misses |
 
-One warm run had a 39-second queue outlier and 55-second total wall time. This small sample is useful for harness validation, but insufficient for a stable p90.
+This five-run sample is sufficient for an initial p90 but remains too small for high-confidence cost or reliability conclusions.
 
 Runs:
 
-- Cold: `37332342966`, `37332559033`, `37332685671`
-- Warm: `37332416281`, `37332620818`, `37332756057`
+- Cold: `37484062213`, `37484155486`, `37484421497`, `37484531531`, `37484644564`
+- Warm: `37484109873`, `37484375071`, `37484478049`, `37484600404`, `37484689779`
 
 ### Depot CI local/API runs
 
@@ -78,7 +83,9 @@ A branch-based `depot ci dispatch` attempt also failed:
 Workflow 'benchmark.yml' not found or does not have workflow_dispatch trigger.
 ```
 
-The workflow exists and declares `workflow_dispatch`, but the repository is not registered through Depot Code Access. Installing the Depot GitHub App and connecting an organization-owned repository is the next onboarding step.
+The workflow exists and declares `workflow_dispatch`, but the original personal repository was not registered through Depot Code Access.
+
+The organization repository is now available and a Depot runner workflow was dispatched as GitHub run `37472043428`. It remained queued without a matching runner for more than 30 seconds and was cancelled. This confirms that installing the Depot GitHub App for `dinasaur-corp` is the remaining runner-onboarding step.
 
 ## What the numbers do and do not show
 
@@ -88,7 +95,7 @@ The Depot workload process was roughly twice as fast as the GitHub-hosted cold w
 - The runner sizes are not matched: observed GitHub 4 CPU versus Depot 2 CPU.
 - We tested Depot CI, not Depot's GitHub Actions runner product.
 - GitHub restored cache entries; Depot local/API runs could not access the cache service.
-- Three repetitions are enough to validate the harness, not enough for p90 or cost conclusions.
+- Five GitHub repetitions and three Depot CI repetitions are enough for an initial directional comparison, not enough for cost conclusions.
 
 ## Developer experience findings
 
@@ -108,7 +115,7 @@ The Depot workload process was roughly twice as fast as the GitHub-hosted cold w
 - Browser approval was required for initial CLI authentication.
 - A local/API workflow can run before the repository is fully connected, but branch dispatch cannot. The difference is not obvious until dispatch fails.
 - Local/API runs skipped the cache service, preventing a realistic warm-cache comparison.
-- The runner product cannot be tested from the current personal-account repository; organization-owner access and GitHub App installation are required.
+- The runner product now has an organization-owned repository, but GitHub App installation remains required.
 - The Depot CI artifact action produced GitHub-style artifact URLs and large numeric run IDs, while Depot's own run ID is a shorter opaque identifier. This creates two identifiers to correlate.
 
 ## Agent experience findings
@@ -146,10 +153,9 @@ Initial authentication and GitHub App installation remain browser-dependent. An 
 
 ### 1. Complete the fair runner comparison
 
-- Use an organization-owned GitHub repository.
-- Install and authorize the Depot GitHub App.
+- Install and authorize the Depot GitHub App for `dinasaur-corp/ci-testing`.
 - Compare `ubuntu-latest` with `depot-ubuntu-24.04-4` so both have four CPUs.
-- Run at least five repetitions; ten is preferable for queue variance.
+- Run five cold/warm pairs; ten is preferable for queue variance after the first comparison.
 - Record queue, startup, checkout, cache restore, install, workload, cache save, artifact, total wall, and cost.
 
 ### 2. Add representative workloads

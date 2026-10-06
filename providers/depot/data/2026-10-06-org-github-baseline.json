@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-06",
+  "repository": "dinasaur-corp/ci-testing",
+  "commitSha": "53bc0de9de95b24f266bc2066dc3ca60f54603aa",
+  "provider": "github-actions",
+  "runnerLabel": "ubuntu-latest",
+  "observedCpuCount": 4,
+  "nodeVersion": "22.23.3",
+  "workload": {
+    "name": "all",
+    "taskCount": 14,
+    "description": "Small Node workload plus six-package synthetic monorepo"
+  },
+  "cold": {
+    "runIds": [37484062213, 37484155486, 37484421497, 37484531531, 37484644564],
+    "repetitions": 5,
+    "medianQueueMs": 5000,
+    "p90QueueMs": 8000,
+    "medianJobMs": 9000,
+    "p90JobMs": 16000,
+    "medianWorkflowWallMs": 14000,
+    "p90WorkflowWallMs": 24000,
+    "medianWorkloadMs": 809.55,
+    "p90WorkloadMs": 894.95,
+    "cacheHits": 0,
+    "cacheMisses": 14
+  },
+  "warm": {
+    "runIds": [37484109873, 37484375071, 37484478049, 37484600404, 37484689779],
+    "repetitions": 5,
+    "medianQueueMs": 4000,
+    "p90QueueMs": 4000,
+    "medianJobMs": 8000,
+    "p90JobMs": 12000,
+    "medianWorkflowWallMs": 13000,
+    "p90WorkflowWallMs": 17000,
+    "medianWorkloadMs": 30.91,
+    "p90WorkloadMs": 44.46,
+    "cacheHits": 14,
+    "cacheMisses": 0
+  }
+}

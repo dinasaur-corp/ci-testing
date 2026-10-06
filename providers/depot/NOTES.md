@@ -5,8 +5,8 @@
 - Provider: Depot
 - Product/mode: Depot CI / Depot GitHub runner
 - Evaluation date: 2026-10-05
-- Repository URL: `https://github.com/dinasaur404/ci-testing`
-- Commit SHA: `32135a687050d99ae2e544baae58e876de0a08c5`
+- Repository URL: Pending runner comparison: `https://github.com/dinasaur-corp/ci-testing`. Completed Depot CI local/API runs: `https://github.com/dinasaur404/ci-testing`.
+- Commit SHA: Pending runner comparison: `53bc0de9de95b24f266bc2066dc3ca60f54603aa`. Completed Depot CI runs: `32135a687050d99ae2e544baae58e876de0a08c5`.
 - Runner label: `depot-ubuntu-24.04-4` for the pending runner comparison; `depot-ubuntu-24.04` for completed Depot CI local/API runs.
 - CPU / memory / architecture: Pending runner comparison: 4 CPU / 16 GB / x86_64. Completed Depot CI runs: 2 CPU / 8 GB / x86_64.
 - Region, if known: Not exposed in collected run metadata.
@@ -21,7 +21,7 @@
 - CLI steps: `depot login`, `depot ci run`, `depot ci status`, `depot ci metrics`, and `depot ci artifacts`.
 - Permissions requested:
 - Credentials or identity model:
-- Errors and retries: Local/API runs skipped the cache service. `depot ci dispatch` failed because the workflow was not registered through Depot Code Access.
+- Errors and retries: Local/API runs skipped the cache service. `depot ci dispatch` failed because the workflow was not registered through Depot Code Access. Organization runner probe `37472043428` remained queued without a runner and was cancelled pending GitHub App installation.
 - Documentation used: Depot runner, cache, CI compatibility, local-run, API, OIDC, and container-build documentation.
 
 ## Scenario results
@@ -42,7 +42,7 @@
 
 | Scenario | GitHub run ID | Queue | Setup | Workload | Total | Cache hits/misses | Cost | Notes |
 | --- | --- | ---: | ---: | ---: | ---: | --- | ---: | --- |
-| Cold | | | | | | | | |
+| Cold | `37472043428` | >30s | Blocked | Not started | Cancelled | N/A | $0 | No matching runner; Depot GitHub App not installed for organization |
 | Warm | | | | | | | | |
 | Source change | | | | | | | | |
 | Lockfile change | | | | | | | | |
