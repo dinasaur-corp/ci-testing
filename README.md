@@ -22,6 +22,7 @@ Results are JSON files in `results/`. The second run should report more task-cac
 ```text
 .github/workflows/benchmark.yml  GitHub Actions entrypoint
 .github/workflows/benchmark-depot-runner.yml  Depot runner entrypoint
+.github/workflows/benchmark-namespace-runner.yml  Namespace runner entrypoint
 .circleci/config.yml             CircleCI entrypoint
 .gitlab-ci.yml                   GitLab CI entrypoint
 .depot/workflows/benchmark.yml   Depot CI entrypoint
