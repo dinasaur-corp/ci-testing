@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-05",
+  "repository": "dinasaur404/ci-testing",
+  "commitSha": "32135a687050d99ae2e544baae58e876de0a08c5",
+  "workload": {
+    "name": "all",
+    "taskCount": 14,
+    "description": "Small Node workload plus six-package synthetic monorepo"
+  },
+  "githubHosted": {
+    "runnerLabel": "ubuntu-latest",
+    "observedCpuCount": 4,
+    "nodeVersion": "22.23.3",
+    "cold": {
+      "runIds": [37332342966, 37332559033, 37332685671],
+      "repetitions": 3,
+      "medianQueueMs": 4000,
+      "medianJobMs": 8000,
+      "medianWorkflowWallMs": 26000,
+      "medianWorkloadMs": 859.16,
+      "cacheHits": 0,
+      "cacheMisses": 14
+    },
+    "warm": {
+      "runIds": [37332416281, 37332620818, 37332756057],
+      "repetitions": 3,
+      "medianQueueMs": 5000,
+      "medianJobMs": 8000,
+      "medianWorkflowWallMs": 22000,
+      "medianWorkloadMs": 50.02,
+      "cacheHits": 14,
+      "cacheMisses": 0,
+      "queueOutlierMs": 39000
+    }
+  },
+  "depotCiLocalApi": {
+    "runnerLabel": "depot-ubuntu-24.04",
+    "documentedCpuCount": 2,
+    "documentedMemoryGb": 8,
+    "nodeVersion": "22.23.3",
+    "runIds": ["4k0m1plbrj", "w24q5thbx4", "z57wpqhj10"],
+    "repetitions": 3,
+    "medianRunQueueMs": 399,
+    "medianJobQueueMs": 2872,
+    "medianJobMs": 8226,
+    "medianRunMs": 14419,
+    "medianWorkloadMs": 453.44,
+    "medianPeakCpuPercent": 31.86,
+    "medianAverageCpuPercent": 30.8,
+    "medianPeakMemoryPercent": 6.37,
+    "cacheHits": 0,
+    "cacheMisses": 14,
+    "cacheLimitation": "Local/API trigger could not contact the cache service because it was not tied to a branch or tag ref."
+  },
+  "comparisonLimitations": [
+    "Different runner sizes: observed GitHub 4 CPU versus documented Depot 2 CPU.",
+    "Depot CI was tested, not the Depot GitHub Actions runner product.",
+    "Depot local/API runs could not access the cache service.",
+    "The workload is too short for reliable cost or p90 conclusions.",
+    "Only three repetitions were collected."
+  ]
+}

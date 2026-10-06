@@ -22,13 +22,13 @@ concurrency:
 
 jobs:
   benchmark:
-    runs-on: depot-ubuntu-24.04
+    runs-on: depot-ubuntu-24.04-4
     timeout-minutes: 20
     env:
       BENCH_PROVIDER: depot-github-runner
       BENCH_WORKLOAD: ${{ inputs.workload || 'all' }}
       BENCH_SCENARIO: ${{ inputs.scenario || 'manual' }}
-      BENCH_RUNNER_LABEL: depot-ubuntu-24.04
+      BENCH_RUNNER_LABEL: depot-ubuntu-24.04-4
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -48,4 +48,3 @@ jobs:
         with:
           name: depot-runner-results-${{ github.run_id }}
           path: results/
-

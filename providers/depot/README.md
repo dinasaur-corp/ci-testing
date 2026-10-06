@@ -2,6 +2,8 @@
 
 Last reviewed: September 30, 2026.
 
+Measured findings and the next benchmark plan are in `providers/depot/REPORT.md`. Capability and project-type support are tracked in `providers/depot/FEATURE_MATRIX.md`.
+
 Depot has two relevant products. Test them separately:
 
 1. **Depot CI**: Depot orchestrates workflows in `.depot/workflows/`. This is the primary experiment because it evaluates CI developer and agent experience.
@@ -100,7 +102,7 @@ In the Depot dashboard, open **GitHub Actions**, connect the GitHub organization
 
 ### 2. Run the prepared workflow
 
-The ready-to-run workflow is `.github/workflows/benchmark-depot-runner.yml`. It uses `depot-ubuntu-24.04` and only runs through manual dispatch, avoiding duplicate automatic runs.
+The ready-to-run workflow is `.github/workflows/benchmark-depot-runner.yml`. It uses `depot-ubuntu-24.04-4` to match the four CPUs observed on the GitHub-hosted baseline and only runs through manual dispatch, avoiding duplicate automatic runs.
 
 In GitHub, open **Actions → Depot GitHub runner benchmark → Run workflow**. Run `cold`, then rerun the same commit as `warm`.
 
